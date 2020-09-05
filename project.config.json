@@ -1,0 +1,70 @@
+{
+	"description": "A WePY project",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false
+	},
+	"compileType": "miniprogram",
+	"appid": "wx67bf9bcfc7d0f3d3",
+	"projectname": "ybw",
+	"miniprogramRoot": "dist/",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 2,
+			"list": [
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/my",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "详情",
+					"pathName": "pages/details",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的游戏",
+					"pathName": "pages/game",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/countDown",
+					"pathName": "pages/countDown",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}

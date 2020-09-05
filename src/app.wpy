@@ -1,0 +1,57 @@
+<style lang="less">
+  @import "./styles/base";
+  @import "./styles/icon";
+  @import "./styles/style";
+
+</style>
+
+<script>
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/index',
+        'pages/my',
+        'pages/login',
+        'pages/countDown',
+      ],
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#0000ff',
+        navigationBarTitleText: '前端之行',
+        navigationBarTextStyle: 'white',
+        // navigationStyle: "custom",
+      },
+      'tabBar': {
+        'color': '#8A8A8A',
+        'selectedColor': '#000000',
+        'backgroundColor': '#ffffff',
+        'borderStyle': 'black',
+        'list': [{
+          'pagePath': 'pages/index',
+          'text': '技能',
+          'iconPath': 'images/tech.png',
+          'selectedIconPath': 'images/tech_active.png'
+        }, {
+          'pagePath': 'pages/my',
+          'text': '我的',
+          'iconPath': 'images/my.png',
+          'selectedIconPath': 'images/my_active.png'
+        }]
+      }
+    }
+
+    constructor() {
+      super()
+      this.use('requestfix')
+      this.use('promisify')
+    }
+
+    onLaunch() {
+
+    }
+  }
+
+</script>

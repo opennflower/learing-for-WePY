@@ -1,0 +1,97 @@
+<template>
+  <view class="container">
+    <!-- 发送短信 -->
+    <smscode :code.sync="codevalue"></smscode>
+    <view style="height:40rpx"></view>
+    <view class="order_title">订单支付倒计时--示例</view>
+    <view class="dirver"></view>
+    <view style="height:20rpx"></view>
+    <view wx:if="{{orderpsyTimeer.minute&&orderpsyTimeer.second}}">请在{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒内支付</view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../utils/tip';
+import request from '../utils/request';
+import smscode from '../components/smscode';
+var moment = require('moment');
+
+export default class CountDown extends wepy.page {
+  config = {
+    navigationBarTitleText: '倒计时demo'
+  };
+  components = {
+    smscode: smscode
+  };
+  events = {
+    fetchSendCode(){
+      console.log('发送验证码');
+    }
+  }
+  data = {
+    codevalue:'',
+    orderpsyTimeer:{
+      houer:null,
+      minute:null,
+      second:null,
+      timer:null
+    },
+  }
+
+ async orderPay(){
+    let that = this
+    let endtime = moment().add(30,'minutes').format('YYYY-MM-DD HH:mm:ss')
+    console.log(endtime);
+    that.orderpsyTimeer.timer = setInterval(()=>{
+      var downTime = parseInt(new Date(endtime.replace(/-/g, "/")).getTime() - new Date().getTime())
+      if(downTime<=0){
+        that.orderpsyTimeer.minute = "00"
+        that.orderpsyTimeer.second = "00"
+         clearInterval(that.orderpsyTimeer.timer);
+         return;
+      }else{
+        var d = parseInt(downTime / 1000 / 3600 / 24);
+        var h = parseInt(downTime / 1000 / 3600 % 24);
+        var m = parseInt(downTime / 1000 / 60 % 60);
+        var s = parseInt(downTime / 1000 % 60);
+
+        d < 10 ? d = '0' + d : d;
+        h < 10 ? h = '0' + h : h;
+        m < 10 ? m = '0' + m : m;
+        s < 10 ? s = '0' + s : s;
+        that.orderpsyTimeer.houer = h
+        that.orderpsyTimeer.minute = m
+        that.orderpsyTimeer.second = s
+      }
+      that.$apply();
+      tip.loaded()
+    },1000)
+  }
+
+  async onLoad(){
+   await tip.loading('加载数据...')
+    this.orderPay()
+  }
+
+  //页面卸载清空timer
+  onUnload(){
+    let that = this
+    clearInterval(that.orderpsyTimeer.timer);
+  }
+
+}
+</script>
+<style lang="less" scoped>
+  .container{
+    padding:30rpx;
+    background: #F5F5F5
+  }
+  .order_title{
+    height: 60rpx;
+  }
+  .dirver{
+    height: 10rpx;
+    width: 375rpx;
+    background: #00ff33;
+  }
+</style>

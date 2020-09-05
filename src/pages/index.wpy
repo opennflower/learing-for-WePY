@@ -1,0 +1,82 @@
+<template>
+  <view class="container">
+    <block wx:for="{{tochlist}}">
+     <view class="wrapper" style="background:#{{item.color}}" @tap="pageTodemo('{{index}}')">{{item.title}}</view>
+    </block>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import tip from '../utils/tip';
+  import request from '../utils/request';
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '首页'
+    }
+    data = {
+      tochlist:[
+        {
+          'title':'倒计时'
+        },
+        {
+          'title':'数值格式化'
+        },
+        {
+          'title':'日期相关'
+        },
+      ],
+    }
+
+    methods = {
+      pageTodemo(index){
+        if(index==0){
+          wx.navigateTo({
+            url: '/pages/countDown',
+          })
+        }
+        tip.toast('Coming Soon !')
+      }
+    }
+
+    onLoad(){
+      this.randomColor()
+    }
+
+    //随机生成颜色
+    randomColor(){
+      if(this.tochlist.length==0){
+        return;
+      }
+      this.tochlist.map(item=>{
+        item.color = Math.floor(Math.random() * 0xffffff).toString(16);
+        return item;
+      });
+    }
+
+  }
+
+</script>
+<style lang="less" scoped>
+  view {
+    font-family: PingFang SC;
+    font-weight: 400;
+  }
+  .container{
+    background: #f5f5f5;
+  }
+  .wrapper{
+    width: 690rpx;
+    height: 90rpx;
+    border-radius: 7rpx;
+    background: #33ffff;
+    margin: 0 auto;
+    margin-top: 20rpx;
+    text-align: center;
+    line-height: 90rpx;
+    color: #fff;
+    font-size: 32rpx;
+    font-weight: bold;
+  }
+
+</style>
