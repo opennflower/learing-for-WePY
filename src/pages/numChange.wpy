@@ -1,0 +1,79 @@
+<template>
+  <view class="Container">
+    <view class="wrapper">
+      <view class="title">手机号码格式化</view>
+      <view class="example">{{phone}}</view>
+      <view class="result">{{phoneChanage}}</view>
+      <view class="btn_group">
+        <view class="submit" @tap="changephone">转换</view>
+        <view class="submit" @tap="checkphone">检测是否是手机号码</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../utils/tip';
+import request from '../utils/request';
+import {validPhone} from '../utils/util';
+export default class NumChange extends wepy.page {
+  config = {
+    navigationBarTitleText: '数值格式化demo'
+  };
+  data = {
+    phone: '15077574613',
+    phoneChanage: ''
+  };
+  methods = {
+    changephone() {
+      this.phoneChanage = this.phone.replace(/^(\d{3})\d{4}(\d+)/, '$1****$2');
+      this.$apply();
+    },
+    checkphone(){
+      var flag = validPhone(this.phone);
+      if(!flag){
+        tip.toast('非手机号码')
+      }else{
+        tip.toast('正确')
+      }
+    }
+  };
+}
+</script>
+<style lang="less" scoped>
+.wrapper {
+  width: 690rpx;
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  .title {
+    font-weight: bold;
+    font-size: 36rpx;
+    margin-bottom: 10rpx;
+  }
+  .example {
+    background: #ffffe0;
+    margin-bottom: 10rpx;
+  }
+  .result {
+    background: #fffaf0;
+    margin-bottom: 10rpx;
+  }
+  .btn_group {
+    display: flex;
+    .submit {
+      padding: 0 20rpx;
+      height: 60rpx;
+      background: #3366ff;
+      color: #fff;
+      font-size: 30rpx;
+      text-align: center;
+      line-height: 60rpx;
+      border-radius: 10rpx;
+      margin-right: 10rpx;
+    }
+  }
+}
+</style>

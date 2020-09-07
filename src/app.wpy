@@ -16,6 +16,7 @@
         'pages/my',
         'pages/login',
         'pages/countDown',
+        'pages/numChange',
       ],
       window: {
         backgroundTextStyle: 'light',

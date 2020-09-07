@@ -63,6 +63,12 @@
 					"pathName": "pages/countDown",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/numChange",
+					"pathName": "pages/numChange",
+					"scene": null
 				}
 			]
 		}

@@ -40,3 +40,25 @@ export function sTrim(text) {
 export function sleep(time) {
   return new Promise((resolve, reject) => setTimeout(resolve, time));
 }
+
+//订单倒计时
+export function orderTime(endtime) {
+  var downTime = parseInt(new Date(endtime.replace(/-/g, "/")).getTime() - new Date().getTime());
+  var d = parseInt(downTime / 1000 / 3600 / 24);
+  var h = parseInt(downTime / 1000 / 3600 % 24);
+  var m = parseInt(downTime / 1000 / 60 % 60);
+  var s = parseInt(downTime / 1000 % 60);
+  d < 10 ? d = '0' + d : d;
+  h < 10 ? h = '0' + h : h;
+  m < 10 ? m = '0' + m : m;
+  s < 10 ? s = '0' + s : s;
+
+  var timeValue = {
+    day: d,
+    hour: h,
+    minute: m,
+    second: s,
+  }
+
+  return timeValue;
+}

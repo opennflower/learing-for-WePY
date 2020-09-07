@@ -7,12 +7,16 @@
     <view class="dirver"></view>
     <view style="height:20rpx"></view>
     <view wx:if="{{orderpsyTimeer.minute&&orderpsyTimeer.second}}">请在{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒内支付</view>
+    <view style="height:20rpx"></view>
+    <view wx:if="{{orderpsyTimeer.day!='00'}}">还剩{{orderpsyTimeer.day}}天{{orderpsyTimeer.hour}}时自动确认</view>
+    <view wx:if="{{orderpsyTimeer.day=='00'&&orderpsyTimeer.hour=='00'&&orderpsyTimeer.minute&&orderpsyTimeer.second}}">还剩{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒自动确认</view>
   </view>
 </template>
 <script>
 import wepy from 'wepy';
 import tip from '../utils/tip';
 import request from '../utils/request';
+import {orderTime} from '../utils/util';
 import smscode from '../components/smscode';
 var moment = require('moment');
 
@@ -31,7 +35,8 @@ export default class CountDown extends wepy.page {
   data = {
     codevalue:'',
     orderpsyTimeer:{
-      houer:null,
+      day:null,
+      hour:null,
       minute:null,
       second:null,
       timer:null
@@ -40,7 +45,7 @@ export default class CountDown extends wepy.page {
 
  async orderPay(){
     let that = this
-    let endtime = moment().add(30,'minutes').format('YYYY-MM-DD HH:mm:ss')
+    let endtime = moment().add(30,'minutes').add(7,'days').format('YYYY-MM-DD HH:mm:ss')
     console.log(endtime);
     that.orderpsyTimeer.timer = setInterval(()=>{
       var downTime = parseInt(new Date(endtime.replace(/-/g, "/")).getTime() - new Date().getTime())
@@ -50,18 +55,11 @@ export default class CountDown extends wepy.page {
          clearInterval(that.orderpsyTimeer.timer);
          return;
       }else{
-        var d = parseInt(downTime / 1000 / 3600 / 24);
-        var h = parseInt(downTime / 1000 / 3600 % 24);
-        var m = parseInt(downTime / 1000 / 60 % 60);
-        var s = parseInt(downTime / 1000 % 60);
-
-        d < 10 ? d = '0' + d : d;
-        h < 10 ? h = '0' + h : h;
-        m < 10 ? m = '0' + m : m;
-        s < 10 ? s = '0' + s : s;
-        that.orderpsyTimeer.houer = h
-        that.orderpsyTimeer.minute = m
-        that.orderpsyTimeer.second = s
+        var tiemValue = orderTime(endtime)
+        that.orderpsyTimeer.day = tiemValue.day
+        that.orderpsyTimeer.hour = tiemValue.hour
+        that.orderpsyTimeer.minute = tiemValue.minute
+        that.orderpsyTimeer.second = tiemValue.second
       }
       that.$apply();
       tip.loaded()

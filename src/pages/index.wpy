@@ -34,8 +34,13 @@
           wx.navigateTo({
             url: '/pages/countDown',
           })
+        }else if(index==1){
+          wx.navigateTo({
+            url: '/pages/numChange',
+          })
+        }else{
+          tip.toast('Coming Soon !')
         }
-        tip.toast('Coming Soon !')
       }
     }
 
