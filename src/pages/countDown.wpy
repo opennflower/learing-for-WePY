@@ -8,8 +8,12 @@
     <view style="height:20rpx"></view>
     <view wx:if="{{orderpsyTimeer.minute&&orderpsyTimeer.second}}">请在{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒内支付</view>
     <view style="height:20rpx"></view>
-    <view wx:if="{{orderpsyTimeer.day!='00'}}">还剩{{orderpsyTimeer.day}}天{{orderpsyTimeer.hour}}时自动确认</view>
-    <view wx:if="{{orderpsyTimeer.day=='00'&&orderpsyTimeer.hour=='00'&&orderpsyTimeer.minute&&orderpsyTimeer.second}}">还剩{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒自动确认</view>
+    <block wx:if="{{orderpsyTimeer.day}}">
+       <view wx:if="{{orderpsyTimeer.day!='00'}}">还剩{{orderpsyTimeer.day}}天{{orderpsyTimeer.hour}}时自动确认</view>
+    </block>
+    <block wx:if="{{orderpsyTimeer.minute}}">
+       <view wx:if="{{orderpsyTimeer.day=='00'&&orderpsyTimeer.hour=='00'&&orderpsyTimeer.minute&&orderpsyTimeer.second}}">还剩{{orderpsyTimeer.minute}}分{{orderpsyTimeer.second}}秒自动确认</view>
+    </block>
   </view>
 </template>
 <script>

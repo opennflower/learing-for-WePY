@@ -38,8 +38,11 @@
           wx.navigateTo({
             url: '/pages/numChange',
           })
-        }else{
-          tip.toast('Coming Soon !')
+        }else if(index==2){
+          // tip.toast('Coming Soon !')
+          wx.navigateTo({
+            url: '/pages/datePage',
+          })
         }
       }
     }

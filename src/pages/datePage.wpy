@@ -1,0 +1,196 @@
+<template>
+  <view class="Container">
+    <view class="wrapper">
+      <view class="element">
+        <label class="dataclass">当前时间：</label>
+        <view class="dataclass">{{currentDate}}</view>
+      </view>
+    </view>
+    <view class="wrapper">
+      <view class="element_vertical">
+        <label class="dataclass">部分日期取值(更多的请浏览Moment.js文档)</label>
+        <view class="dataclass">年：{{yearValue}}</view>
+        <view class="dataclass">月：{{monthValue}}</view>
+        <view class="dataclass">日：{{dayValue}}</view>
+        <view class="dataclass">时：{{hourValue}}</view>
+        <view class="dataclass">分：{{minuteValue}}</view>
+        <view class="dataclass">秒：{{secondValue}}</view>
+        <view class="dataclass">星期：{{weekValue}}(0代表星期日，1代表星期一，...)</view>
+        <view class="dataclass">季度：{{quarterValue}}(1代表春季，...，4代表冬季)</view>
+      </view>
+    </view>
+     <view class="wrapper">
+      <view class="element_vertical">
+        <label class="dataclass">部分日期操作(更多的请浏览Moment.js文档)</label>
+         <view class="dataclass">增加7天：{{addValue}}</view>
+         <view class="dataclass">减少7天：{{subtractValue}}</view>
+         <view class="">tip:增加，减少，用法一样，改变类型即可</view>
+      </view>
+    </view>
+    <view class="wrapper_select">
+      <view class="dateSelect">{{selectDateValue}} {{selectTimeValue}}</view>
+      <picker mode="date" value="{{selectDateValue}}" @change="selectDate">
+        <view class="select_btn">选择日期</view>
+      </picker>
+      <picker mode="time" value="{{selectTimeValue}}" @change="selectTime">
+        <view class="select_btn">选择时间点</view>
+      </picker>
+    </view>
+    <view class="wrapper">
+      <view class="element_vertical">
+        <label class="dataclass">部分日期比较(更多的请浏览Moment.js文档)</label>
+         <view class="dataclass">所选日期与今天比较</view>
+         <view class="btn_handle">
+           <view class="title">是否在前：{{isBefore?'是':'否'}}</view>
+           <view class="btn_widget" @tap="checkBefore">查询</view>
+         </view>
+          <view class="btn_handle">
+           <view class="title">是否相同：{{isSame?'是':'否'}}</view>
+           <view class="btn_widget" @tap="checkSame">查询</view>
+         </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../utils/tip';
+import request from '../utils/request';
+var moment = require('moment');
+export default class NumChange extends wepy.page{
+  config = {
+    navigationBarTitleText: 'momentjs使用demo'
+  };
+  data = {
+    currentDate:'',
+    yearValue:'',
+    monthValue:'',
+    dayValue:'',
+    hourValue:'',
+    minuteValue:'',
+    secondValue:'',
+    weekValue:'',
+    quarterValue:'',//季度
+    addValue:'',
+    subtractValue:'',
+    selectDateValue:'',
+    selectTimeValue:'',
+    isBefore:false,
+    isSame:false,
+  }
+
+  methods = {
+    selectDate(e){
+      this.selectDateValue = e.detail.value;
+      this.$apply();
+    },
+    selectTime(e){
+      this.selectTimeValue = e.detail.value;
+      this.$apply();
+    },
+    checkBefore(){
+      if(!this.selectDateValue){
+        tip.toast('请先选择日期')
+        return;
+      }
+      this.isBefore = moment(this.selectDateValue).isBefore(moment())
+      this.$apply();
+    },
+    checkSame(){
+      if(!this.selectDateValue){
+        tip.toast('请先选择日期')
+        return;
+      }
+      this.isSame = moment(this.selectDateValue).isSame(moment())
+      console.log(this.isSame);
+      this.$apply();
+    }
+  }
+
+
+
+  onLoad(){
+    this.currentDate = moment().format('YYYY-MM-DD HH:mm:ss')
+    this.yearValue = moment().year();
+    this.monthValue = moment().month()+1;
+    this.dayValue = moment().date();
+    this.hourValue = moment().hour();
+    this.minuteValue = moment().minute();
+    this.secondValue = moment().second();
+    this.weekValue = moment().day();
+    this.quarterValue = moment().quarters();
+    this.addValue = moment().add(7,'d').format('YYYY-MM-DD')
+    this.subtractValue = moment().subtract(7,'d').format('YYYY-MM-DD')
+    this.$apply()
+  }
+}
+</script>
+<style lang="less" scoped>
+  .wrapper{
+    padding: 20rpx;
+    margin: 20rpx;
+    background: #66ccff;
+    border-radius: 10rpx;
+    .element{
+      display: flex;
+      align-items: center;
+      .dataclass{
+        color: #EE3527;
+        font-size: 32rpx;
+        font-weight: bold;
+      }
+    }
+    .element_vertical{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .dataclass{
+        color: #EE3527;
+        font-size: 32rpx;
+        font-weight: bold;
+      }
+      .btn_handle{
+        display: flex;
+        align-items: center;
+        margin-top: 10rpx;
+        .title{
+          color: #EE3527;
+          font-size: 32rpx;
+          font-weight: bold;
+        }
+        .btn_widget{
+          padding: 5rpx 10rpx;
+          margin-left: 10rpx;
+          border-radius: 10rpx;
+          background: #0000ff;
+          color: #fff;
+        }
+      }
+    }
+  }
+  .wrapper_select{
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+    margin: 20rpx;
+    .dateSelect{
+      width: 250rpx;
+      height: 60rpx;
+      line-height: 60rpx;
+      padding-left: 10rpx;
+      background: #ffff99;
+      border-radius: 10rpx;
+    }
+    .select_btn{
+      height: 60rpx;
+      padding: 0rpx 10rpx;
+      color: #fff;
+      background: #0000ff;
+      font-size: 28rpx;
+      text-align: center;
+      line-height: 60rpx;
+      border-radius: 10rpx;
+      margin: 0 10rpx;
+    }
+  }
+</style>

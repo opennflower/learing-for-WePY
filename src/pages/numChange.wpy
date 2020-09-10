@@ -2,11 +2,38 @@
   <view class="Container">
     <view class="wrapper">
       <view class="title">手机号码格式化</view>
-      <view class="example">{{phone}}</view>
+      <view class="example">
+        <input
+          class="intputclass"
+          @input="intphone"
+          value="{{phone}}"
+          type="number"
+          placeholder="请输入手机号码"
+        />
+      </view>
       <view class="result">{{phoneChanage}}</view>
       <view class="btn_group">
         <view class="submit" @tap="changephone">转换</view>
         <view class="submit" @tap="checkphone">检测是否是手机号码</view>
+      </view>
+    </view>
+    <view style="height:40rpx"></view>
+    <view class="wrapper">
+      <view class="title">价格格式化</view>
+      <view class="example">
+        <input
+          class="intputclass"
+          @input="intprice"
+          value="{{price}}"
+          type="digit"
+          maxlength="{{maxlength}}"
+          placeholder="请输入价格"
+        />
+      </view>
+      <view wx:if="{{priceChanage}}" class="result">逗号隔开，三位数：{{priceChanage}}</view>
+      <view wx:if="{{priceChanage2}}" class="result">过万以万为单位：{{priceChanage2}}</view>
+      <view class="btn_group">
+        <view class="submit" @tap="changeprice">转换</view>
       </view>
     </view>
   </view>
@@ -15,27 +42,57 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 import request from '../utils/request';
-import {validPhone} from '../utils/util';
+import { validPhone,intPriceUtil,unitConvert,formatCurrency} from '../utils/util';
 export default class NumChange extends wepy.page {
   config = {
     navigationBarTitleText: '数值格式化demo'
   };
   data = {
-    phone: '15077574613',
-    phoneChanage: ''
+    phone: '',
+    phoneChanage: '',
+    price: '',
+    priceChanage: '',
+    priceChanage2: '',
+    maxlength:50,
   };
   methods = {
+    intphone(e) {
+      this.phone = e.detail.value;
+      this.$apply();
+    },
+    intprice(e) {
+      this.price = e.detail.value;
+      this.maxlength = intPriceUtil(this.price)
+      this.$apply();
+    },
     changephone() {
+      if (!this.phone) {
+        tip.toast('请输入手机号码');
+        return;
+      }
       this.phoneChanage = this.phone.replace(/^(\d{3})\d{4}(\d+)/, '$1****$2');
       this.$apply();
     },
-    checkphone(){
-      var flag = validPhone(this.phone);
-      if(!flag){
-        tip.toast('非手机号码')
-      }else{
-        tip.toast('正确')
+    checkphone() {
+      if (!this.phone) {
+        tip.toast('请输入手机号码');
+        return;
       }
+      var flag = validPhone(this.phone);
+      if (!flag) {
+        tip.toast('非手机号码');
+      } else {
+        tip.toast('正确');
+      }
+    },
+    changeprice(){
+      if(!this.price){
+        tip.toast('请输入价格');
+        return;
+      }
+      this.priceChanage = formatCurrency(this.price)
+      this.priceChanage2 = unitConvert(this.price)
+      this.$apply()
     }
   };
 }
@@ -56,6 +113,13 @@ export default class NumChange extends wepy.page {
   .example {
     background: #ffffe0;
     margin-bottom: 10rpx;
+    width: 400rpx;
+    height: 60rpx;
+  }
+  .intputclass {
+    width: 400rpx;
+    height: 60rpx;
+    padding-left: 10rpx;
   }
   .result {
     background: #fffaf0;
